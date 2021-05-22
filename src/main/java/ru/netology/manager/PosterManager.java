@@ -1,53 +1,37 @@
+
 package ru.netology.manager;
+import ru.netology.domain.Film;
 
-import lombok.NoArgsConstructor;
-import ru.netology.domain.Movie;
 
-@NoArgsConstructor
-public class MovieManager {
-    private int showMoviesCount = 10; // количество фильмов = 10
-    private Movie[] items = new Movie[0];
+public class PosterManager {
+    private Film[] poster = new Film[0];
+    private int filmQuantity = 10;
 
-    public MovieManager(int showMoviesCount) {
-        this.showMoviesCount = showMoviesCount;
+    public PosterManager() {
+
     }
 
-    public void addMovie(Movie item) { // добавить фильм
-        // создаём новый массив размером на единицу больше
-        int length = items.length + 1;
-        Movie[] tmp = new Movie[length];
-
-        // копируем поэлементно
-        for (int i = 0; i < items.length; i++) {
-            tmp[i] = items[i];
+    //добавить новый фильм
+    public void add(Film newFilm){
+        int length = poster.length + 1;
+        Film[] newPoster = new Film[length];
+        for (int i = 0; i < poster.length; i++){
+            newPoster[i] = poster[i];
         }
-        System.arraycopy(items, 0, tmp, 0, items.length);
-
-        // кладём последним наш элемент
-        int lastIndex = tmp.length - 1;
-        tmp[lastIndex] = item;
-        items = tmp;
+        newPoster[newPoster.length - 1] = newFilm;
+        poster = newPoster;
     }
-
-    public Movie[] getMovies() {
-        Movie[] reverse = new Movie[items.length];
-        int currentIndex = 0;
-        // перебираем массив в прямом порядке
-        // но кладём в результаты в обратном
-        for (int i = reverse.length - 1; i >= 0; i--) {
-            reverse[currentIndex] = items[i];
-            currentIndex++;
+    //получить последний фильм
+    public Film[] getLast(){
+        int quantity = Math.min(filmQuantity, poster.length);
+        Film[] result = new Film[quantity];
+        for (int i = 0; i < quantity; i++){
+            int index = poster.length - 1 -i;
+            result[i] = poster[index];
         }
-        if (reverse.length <= showMoviesCount) {
-            return reverse;
-        } else {
-            Movie[] results = new Movie[showMoviesCount];
-            for (int i = 0; i < showMoviesCount; i++) {
-                results[i] = reverse[i];
-            }
-            return results;
-        }
+        return result;
     }
+}
 //    // наивная реализация
 //    public void removeMovie(int id) { //  удалить фильм
 //        int length = items.length - 1;
@@ -62,4 +46,3 @@ public class MovieManager {
 //        // меняем наши элементы
 //        items = tmp;
 //    }
-}

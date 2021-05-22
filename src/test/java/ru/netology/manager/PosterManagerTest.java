@@ -1,55 +1,55 @@
+
 package ru.netology.manager;
-
 import org.junit.jupiter.api.Test;
-import ru.netology.domain.Movie;
+import ru.netology.domain.Film;
+import org.junit.jupiter.api.BeforeEach;
+import ru.netology.manager.PosterManager;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
-class MovieManagerTest {
-    MovieManager manager = new MovieManager();
+class PosterManagerTest{
+    private PosterManager manager = new PosterManager();
+    private Film one = new Film(1, "one", "Comedy", "https://www.kinopoisk.ru");
+    private Film two = new Film(2, "two", "Detective", "https://www.kinopoisk.ru");
+    private Film three = new Film(3, "three", "Drama", "https://www.kinopoisk.ru");
+    private Film four = new Film(4, "four", "Horrors", "https://www.kinopoisk.ru");
+    private Film five = new Film(5, "five", "Anime", "https://www.kinopoisk.ru");
+    private Film six = new Film(6, "two", "Biography", "https://www.kinopoisk.ru");
+    private Film seven = new Film(7, "three", "Military", "https://www.kinopoisk.ru");
+    private Film eight = new Film(8, "four", "Story", "https://www.kinopoisk.ru");
+    private Film nine = new Film(9, "one", "Music", "https://www.kinopoisk.ru");
+    private Film ten = new Film(10, "two", "Thriller", "https://www.kinopoisk.ru");
+    private Film eleven = new Film(11, "three", "Fantasy", "https://www.kinopoisk.ru");
 
-    @Test
-    void testEmptyMovies() {
-
-        Movie[] movies = manager.getMovies();
-        assertEquals(movies.length, 0);
+    @BeforeEach
+    public void setUp() {
+        manager.add(one);
+        manager.add(two);
+        manager.add(three);
+        manager.add(four);
+        manager.add(five);
+        manager.add(six);
+        manager.add(seven);
+        manager.add(eight);
+        manager.add(nine);
     }
 
     @Test
-    void testAddMovies() {
-        Movie movie = new Movie(1, "https://www.kinopoisk.ru", "Бладшот", "боевик");
-        manager.addMovie(movie);
-        assertEquals(manager.getMovies().length, 1);
+    void getLastWithQuantityMoreThanInList() { //пол-ть последн. с кол-вом БОЛЬШЕ, чем в списке
+        Film[] actual = manager.getLast();
+        Film[] expected = new Film[]{nine, eight, seven, six, five, four, three, two, one};
+        assertArrayEquals(expected, actual);
     }
 
     @Test
-    void testSetMoviesCount() {
-        MovieManager manager = new MovieManager(1);
-        Movie movie = new Movie(1, "https://www.kinopoisk.ru", "Бладшот", "боевик");
-        Movie movie2 = new Movie(2, "https://www.kinopoisk.ru", "Вперёд", "мультфильм");
-        manager.addMovie(movie);
-        manager.addMovie(movie2);
-        assertEquals(1, manager.getMovies().length);
-        assertEquals(manager.getMovies()[0].getName(), "Вперёд");
-    }
-
-    @Test
-    void testMoviesQueue() {
-        Movie movie = new Movie(1, "https://www.kinopoisk.ru", "Бладшот", "боевик");
-        Movie movie2 = new Movie(2, "https://www.kinopoisk.ru", "Вперёд", "мультфильм");
-        Movie movie3 = new Movie(3, "https://www.kinopoisk.ru", "Отель <<Белград>>", "комедия");
-        Movie movie4 = new Movie(4, "https://www.kinopoisk.ru", "Джентльмены", "боевик");
-        Movie movie5 = new Movie(5, "https://www.kinopoisk.ru", "Человек-невидимка", "ужасы");
-        manager.addMovie(movie);
-        manager.addMovie(movie2);
-        manager.addMovie(movie3);
-        manager.addMovie(movie4);
-        manager.addMovie(movie5);
-        assertEquals(manager.getMovies()[0].getName(), "Человек-невидимка");
-        assertEquals(manager.getMovies()[4].getName(), "Бладшот");
+    void getLastWithQuantityLessThanInList() { //пол-ть последн. с кол-вом МЕНЬШЕ, чем в списке
+        manager.add(ten);
+        manager.add(eleven);
+        Film[] actual = manager.getLast();
+        Film[] expected = new Film[]{eleven, ten, nine, eight, seven, six, five, four, three, two};
+        assertArrayEquals(expected, actual);
     }
 }
-
 //        @Test
 //        public void shouldNotRemoveIfNotExists() {
 //            CartManager manager = new CartManager();
